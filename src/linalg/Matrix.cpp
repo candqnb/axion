@@ -49,6 +49,15 @@ Matrix Matrix::operator+(const Matrix& other) const {
     return result;
 }
 
+Matrix Matrix::operator+(double scalar) const {
+    Matrix result(*this);
+
+    for (double& value : result.data_) {
+        value += scalar;
+    }
+    return result;
+}
+
 Matrix Matrix::operator-(const Matrix& other) const {
     if (rows_ != other.rows_ ||
         cols_ != other.cols_) {
@@ -58,6 +67,15 @@ Matrix Matrix::operator-(const Matrix& other) const {
     Matrix result(rows_, cols_);
     for (std::size_t i = 0; i < data_.size(); ++i) {
         result.data_[i] = data_[i] - other.data_[i];
+    }
+    return result;
+}
+
+Matrix Matrix::operator-(double scalar) const {
+    Matrix result(*this);
+
+    for (double& value : result.data_) {
+        value -= scalar;
     }
     return result;
 }
@@ -79,6 +97,17 @@ Matrix Matrix::operator*(const Matrix& other) const {
     }
     return result;
 }
+
+Matrix Matrix::operator*(double scalar) const {
+    Matrix result(*this);
+
+    for (double& value : result.data_) {
+        value *= scalar;
+    }
+
+    return result;
+}
+
 
 Matrix Matrix::transpose() const {
     Matrix result(cols_, rows_);
