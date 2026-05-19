@@ -19,7 +19,7 @@ Matrix::Matrix(std::size_t rows, std::size_t cols, std::initializer_list<double>
       data_(values) {
 
     if (values.size() != rows * cols) {
-        throw std::runtime_error(
+        throw std::invalid_argument(
             "Initializer list size does not match matrix dimensions");
     }
 }
@@ -39,7 +39,7 @@ const double& Matrix::operator()(std::size_t row, std::size_t col) const {
 Matrix Matrix::operator+(const Matrix& other) const {
     if (rows_ != other.rows_ ||
         cols_ != other.cols_) {
-        throw std::runtime_error(
+        throw std::invalid_argument(
             "Matrix dimensions must match for addition");
     }
     Matrix result(rows_, cols_);
@@ -61,7 +61,7 @@ Matrix Matrix::operator+(double scalar) const {
 Matrix Matrix::operator-(const Matrix& other) const {
     if (rows_ != other.rows_ ||
         cols_ != other.cols_) {
-        throw std::runtime_error(
+        throw std::invalid_argument(
             "Matrix dimensions must match for subtraction");
     }
     Matrix result(rows_, cols_);
@@ -82,8 +82,8 @@ Matrix Matrix::operator-(double scalar) const {
 
 Matrix Matrix::operator*(const Matrix& other) const {
     if (cols_ != other.rows_) {
-        throw std::runtime_error(
-            "Invalid matrix dimensions for multiplication");
+        throw std::invalid_argument(
+            "Matrix dimensions must match for multiplication");
     }
     Matrix result(rows_, other.cols_);
     for (std::size_t i = 0; i < rows_; ++i) {
