@@ -1,2 +1,2 @@
 # Axion
-Axion is a framework designed to be simple and fast.
+Axion is a machine learning framework designed to be simple and fast.
