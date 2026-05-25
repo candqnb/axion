@@ -7,14 +7,14 @@ using namespace axion::linalg;
 int main() {
 
     Matrix A(2, 2, {
-        1.0, 2.0,
-        3.0, 4.0
-    });
+			1.0, 2.0,
+			3.0, 4.0
+		});
 
     Matrix B(2, 2, {
-        5.0, 6.0,
-        7.0, 8.0
-    });
+			5.0, 6.0,
+			7.0, 8.0
+		});
 
     Matrix C = A + B;
 
