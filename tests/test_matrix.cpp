@@ -49,5 +49,12 @@ int main() {
     assert(G(1,0) == 15.0);
     assert(G(1,1) == 20.0);
 
+    Matrix H = A.hadamard(B);
+
+    assert(H(0,0) == 5.0);
+    assert(H(0,1) == 12.0);
+    assert(H(1,0) == 21.0);
+    assert(H(1,1) == 32.0);
+    
     return 0;
 }

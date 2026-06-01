@@ -16,10 +16,10 @@ Axion is a machine learning framework designed to be simple and fast.
 - [x] Scalar operations
 - [x] Matrix multiplication
 - [x] Transpose
+- [x] Hadamard product
 
 ### Next Steps
 
-- [ ] Add Hadamard product (https://en.wikipedia.org/wiki/Hadamard_product_(matrices))
 - [ ] Add `apply(function)` (https://en.cppreference.com/w/cpp/algorithm/transform)
 - [ ] Add random initialization (https://en.cppreference.com/w/cpp/numeric/random)
 - [ ] Add filled matrix helper (https://numpy.org/doc/stable/reference/generated/numpy.full.html)
@@ -77,8 +77,8 @@ Axion is a machine learning framework designed to be simple and fast.
 
 ```cpp
 struct Sample {
-    Matrix input;
-    double target;
+Matrix input;
+double target;
 };
 ```
 

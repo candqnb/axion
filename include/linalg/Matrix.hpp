@@ -41,6 +41,8 @@ namespace axion::linalg {
 
 		Matrix transpose() const noexcept;
 
+        Matrix hadamard(const Matrix& other) const;
+        
 		std::size_t rows() const noexcept;
 		std::size_t cols() const noexcept;
 

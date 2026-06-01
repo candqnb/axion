@@ -224,6 +224,22 @@ namespace axion::linalg {
 		return result;
 	}
 
+    Matrix Matrix::hadamard(const Matrix& other) const {
+        Matrix result(cols_, rows_);
+        if (rows_ != other.rows_ ||
+			cols_ != other.cols_) {
+			throw std::invalid_argument("Dimension mismatch for -=");
+		}
+        
+        for (std::size_t i = 0; i < rows_; ++i) {
+            for (std::size_t j = 0; j < cols_; ++j) {
+                result(i, j) = (*this)(i,j) * (other)(i,j);
+            }
+        }
+
+        return result;
+    }
+
 	std::size_t Matrix::rows() const noexcept {
 		return rows_;
 	}
