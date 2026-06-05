@@ -51,6 +51,20 @@ int main() {
     assert((A0 * A1)(0,1) == 22.0);
     assert((A0 * A1)(1,0) == 43.0);
     assert((A0 * A1)(1,1) == 50.0);
+
+    Matrix T1 = A0;
+    T1 *= 5.0;
+
+    assert(T1(0,0) == 5.0);
+    assert(T1(0,1) == 10.0);
+    assert(T1(1,0) == 15.0);
+    assert(T1(1,1) == 20.0);
+
+    // Tests for Hadamard operation
+    assert((A0.hadamard(A1))(0,0) == 5.0);
+    assert((A0.hadamard(A1))(0,1) == 12.0);
+    assert((A0.hadamard(A1))(1,0) == 21.0);
+    assert((A0.hadamard(A1))(1,1) == 32.0);
     
     return 0;
 }
