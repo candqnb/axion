@@ -1,8 +1,10 @@
 # Axion
 
-Axion is a machine learning framework designed to be simple and fast.
+Axion is a machine learning framework designed to be fast, allowing users to develop models in C++.
 
 ---
+
+> Note: As of 06/06/2026, I decided to change the framework's structure to make greater use of C++, particularly templates. With this change, the main class will be Tensor, and Matrix will be a specialization of the Tensor class.
 
 # Roadmap
 
