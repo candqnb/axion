@@ -1,29 +1,45 @@
 CXX := clang++
-CXXFLAGS := -std=c++20 -Wall -Wextra -O2 -Iinclude
+CXXFLAGS := -std=c++23 -Wall -Wextra -O2 -Iinclude
 
-SRC := src/linalg/Matrix.cpp
+SRC_DIR := src
+TEST_DIR := tests
+BUILD_DIR := build
 
-LIB_OBJ := Matrix.o
+TARGET_TEST := test_runner
 
-TEST_OBJ := test_matrix.o
+# Collect sources
+SRC := $(shell find $(SRC_DIR) -name "*.cpp")
+TEST_SRC := $(shell find $(TEST_DIR) -name "*.cpp")
 
-TARGET_TEST := test_matrix
+# Object mapping
+OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+TEST_OBJ := $(TEST_SRC:$(TEST_DIR)/%.cpp=$(BUILD_DIR)/tests/%.o)
 
-all: $(TARGET_TEST)
+# Default: build + test
+all: build test
 
-$(LIB_OBJ): $(SRC)
+# BUILD ONLY
+build: $(OBJ)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(TEST_OBJ): tests/test_matrix.cpp
+# Test build
+$(BUILD_DIR)/tests/%.o: $(TEST_DIR)/%.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(TARGET_TEST): $(LIB_OBJ) $(TEST_OBJ)
+# Link test executable
+$(TARGET_TEST): $(OBJ) $(TEST_OBJ)
 	$(CXX) $^ -o $@
 
-run-test: $(TARGET_TEST)
+# Test and run (build + run)
+test: $(TARGET_TEST)
 	./$(TARGET_TEST)
 
+# CLEAN
 clean:
-	rm -f *.o $(TARGET_EXAMPLE) $(TARGET_TEST)
+	rm -rf $(BUILD_DIR) $(TARGET_TEST)
 
-.PHONY: all clean run-example run-test
+.PHONY: all build test clean
