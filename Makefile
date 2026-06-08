@@ -1,45 +1,59 @@
 CXX := clang++
-CXXFLAGS := -std=c++23 -Wall -Wextra -O2 -Iinclude
 
-SRC_DIR := src
-TEST_DIR := tests
-BUILD_DIR := build
+# Default includes
+INCLUDES := -Iinclude
 
-TARGET_TEST := test_runner
+# Source and test files
+TEST_SRC := tests/test_matrix.cpp
+TEST_OBJ := test_matrix.o
+TARGET_TEST := test_matrix
 
-# Collect sources
-SRC := $(shell find $(SRC_DIR) -name "*.cpp")
-TEST_SRC := $(shell find $(TEST_DIR) -name "*.cpp")
+# -------------------
+# Development flags
+# -------------------
+DEBUG_FLAGS := -std=c++20 \
+               -Wall -Wextra -Wpedantic \
+               -Wshadow -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wold-style-cast \
+               -g -O0 -fno-omit-frame-pointer \
+               -fsanitize=address,undefined,leak \
+               -fstack-protector-all \
+               -ftemplate-backtrace-limit=0
 
-# Object mapping
-OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-TEST_OBJ := $(TEST_SRC:$(TEST_DIR)/%.cpp=$(BUILD_DIR)/tests/%.o)
+# -------------------
+# Release flags
+# -------------------
+RELEASE_FLAGS := -std=c++20 -O2 -DNDEBUG -flto -Wall -Wextra -Wpedantic
 
-# Default: build + test
-all: build test
+# Default: debug build
+CXXFLAGS := $(DEBUG_FLAGS) $(INCLUDES)
 
-# BUILD ONLY
-build: $(OBJ)
+# -------------------
+# Targets
+# -------------------
+all: debug
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(dir $@)
+# Debug build
+debug: CXXFLAGS := $(DEBUG_FLAGS) $(INCLUDES)
+debug: $(TARGET_TEST)
+
+# Release build
+release: CXXFLAGS := $(RELEASE_FLAGS) $(INCLUDES)
+release: clean $(TARGET_TEST)
+
+# Compile test object
+$(TEST_OBJ): $(TEST_SRC)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Test build
-$(BUILD_DIR)/tests/%.o: $(TEST_DIR)/%.cpp
-	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# Link executable
+$(TARGET_TEST): $(TEST_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Link test executable
-$(TARGET_TEST): $(OBJ) $(TEST_OBJ)
-	$(CXX) $^ -o $@
-
-# Test and run (build + run)
-test: $(TARGET_TEST)
+# Run tests
+run-test: debug
 	./$(TARGET_TEST)
 
-# CLEAN
+# Clean build artifacts
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET_TEST)
+	rm -f *.o $(TARGET_TEST)
 
-.PHONY: all build test clean
+.PHONY: all debug release run-test clean

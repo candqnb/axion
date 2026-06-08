@@ -4,8 +4,6 @@ Axion is a machine learning framework designed to be fast, allowing users to dev
 
 ---
 
-> Note: As of 06/06/2026, I decided to change the framework's structure to make greater use of C++, particularly templates. With this change, the main class will be Tensor, and Matrix will be a specialization of the Tensor class.
-
 # Roadmap
 
 ## Phase 1 — Linear Algebra
