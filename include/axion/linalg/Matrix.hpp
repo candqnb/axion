@@ -1,61 +1,81 @@
 #pragma once
 
+#include <concepts>
 #include <cstddef>
-#include <stdexcept>
 #include <initializer_list>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 namespace axion::linalg {
 
-	class Matrix {
-	public:
-		Matrix();
-		Matrix(std::size_t rows, std::size_t cols);
-		Matrix(std::size_t rows, std::size_t cols, std::initializer_list<double> values);
+    template<typename T>
+    concept AllowedTypes = std::floating_point<T>;
 
-		double& operator()(std::size_t row, std::size_t col);
-		const double& operator()(std::size_t row, std::size_t col) const;
+    template<AllowedTypes T>
+    class Matrix;
 
-		Matrix operator+(const Matrix& other) const;
-		Matrix operator+(double scalar) const;
-		friend Matrix operator+(double scalar, const Matrix& m);
+    template<AllowedTypes T>
+    Matrix<T> operator+(T scalar, const Matrix<T>& m);
 
-		Matrix& operator+=(const Matrix& other);
-		Matrix& operator+=(double scalar);
+    template<AllowedTypes T>
+    Matrix<T> operator-(T scalar, const Matrix<T>& m);
 
-		Matrix operator-(const Matrix& other) const;
-		Matrix operator-(double scalar) const;
-		friend Matrix operator-(double scalar, const Matrix& m);
+    template<AllowedTypes T>
+    Matrix<T> operator*(T scalar, const Matrix<T>& m);
 
-		Matrix& operator-=(const Matrix& other);
-		Matrix& operator-=(double scalar);
+    template<AllowedTypes T>
+    std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix);
 
-		Matrix operator*(const Matrix& other) const;
-		Matrix operator*(double scalar) const;
-		friend Matrix operator*(double scalar, const Matrix& m);
+    template<AllowedTypes T>
+    class Matrix {
+    public:
+        Matrix();
+        Matrix(std::size_t rows, std::size_t cols);
+        Matrix(std::size_t rows, std::size_t cols, std::initializer_list<T> values);
 
-		Matrix& operator*=(double scalar);
+        T& operator()(std::size_t row, std::size_t col);
+        const T& operator()(std::size_t row, std::size_t col) const;
 
-		Matrix operator/(double scalar) const;
-		Matrix& operator/=(double scalar);
+        Matrix operator+(const Matrix& other) const;
+        Matrix operator+(T scalar) const;
 
-		Matrix transpose() const noexcept;
+        Matrix& operator+=(const Matrix& other);
+        Matrix& operator+=(T scalar);
 
+        Matrix operator-(const Matrix& other) const;
+        Matrix operator-(T scalar) const;
+
+        Matrix& operator-=(const Matrix& other);
+        Matrix& operator-=(T scalar);
+
+        Matrix operator*(const Matrix& other) const;
+        Matrix operator*(T scalar) const;
+
+        Matrix& operator*=(T scalar);
+
+        Matrix operator/(T scalar) const;
+        Matrix& operator/=(T scalar);
+
+        Matrix transpose() const noexcept;
         Matrix hadamard(const Matrix& other) const;
-        
-		std::size_t rows() const noexcept;
-		std::size_t cols() const noexcept;
 
-		friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
+        std::size_t rows() const noexcept;
+        std::size_t cols() const noexcept;
 
-	private:
-		std::size_t rows_;
-		std::size_t cols_;
-		std::vector<double> data_;
+        friend Matrix<T> operator+<T>(T scalar, const Matrix<T>& m);
+        friend Matrix<T> operator-<T>(T scalar, const Matrix<T>& m);
+        friend Matrix<T> operator*<T>(T scalar, const Matrix<T>& m);
 
-		std::size_t index(std::size_t row, std::size_t col) const noexcept;
-	};
+        friend std::ostream& operator<< <T>(std::ostream& os, const Matrix<T>& matrix);
+
+    private:
+        std::size_t rows_{};
+        std::size_t cols_{};
+        std::vector<T> data_;
+
+        std::size_t index(std::size_t row, std::size_t col) const noexcept;
+    };
 
 }
 
