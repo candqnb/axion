@@ -1,13 +1,13 @@
 namespace axion::linalg {
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>::Matrix()
         : rows_(0),
           cols_(0)
     {
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>::Matrix(std::size_t rows, std::size_t cols)
         : rows_(rows),
           cols_(cols),
@@ -15,7 +15,7 @@ namespace axion::linalg {
     {
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>::Matrix(std::size_t rows, std::size_t cols, std::initializer_list<T> values)
         : rows_(rows),
           cols_(cols),
@@ -26,25 +26,25 @@ namespace axion::linalg {
         }
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     std::size_t Matrix<T>::index(std::size_t row, std::size_t col) const noexcept
     {
         return row * cols_ + col;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     T& Matrix<T>::operator()(std::size_t row, std::size_t col)
     {
         return data_[index(row, col)];
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     const T& Matrix<T>::operator()(std::size_t row, std::size_t col) const
     {
         return data_[index(row, col)];
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::operator+(const Matrix& other) const
     {
         if (rows_ != other.rows_ ||
@@ -62,7 +62,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>& Matrix<T>::operator+=(const Matrix& other)
     {
         if (rows_ != other.rows_ ||
@@ -77,7 +77,7 @@ namespace axion::linalg {
         return *this;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::operator+(T scalar) const
     {
         Matrix<T> result(*this);
@@ -89,7 +89,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>& Matrix<T>::operator+=(T scalar)
     {
         for (auto& v : data_) {
@@ -99,7 +99,7 @@ namespace axion::linalg {
         return *this;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::operator-(const Matrix& other) const
     {
         if (rows_ != other.rows_ ||
@@ -117,7 +117,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>& Matrix<T>::operator-=(const Matrix& other)
     {
         if (rows_ != other.rows_ ||
@@ -132,7 +132,7 @@ namespace axion::linalg {
         return *this;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::operator-(T scalar) const
     {
         Matrix<T> result(*this);
@@ -144,7 +144,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>& Matrix<T>::operator-=(T scalar)
     {
         for (auto& v : data_) {
@@ -154,7 +154,7 @@ namespace axion::linalg {
         return *this;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::operator*(T scalar) const
     {
         Matrix<T> result(*this);
@@ -166,7 +166,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>& Matrix<T>::operator*=(T scalar)
     {
         for (auto& v : data_) {
@@ -176,7 +176,7 @@ namespace axion::linalg {
         return *this;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::operator/(T scalar) const
     {
         if (scalar == T{}) {
@@ -192,7 +192,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T>& Matrix<T>::operator/=(T scalar)
     {
         if (scalar == T{}) {
@@ -206,7 +206,7 @@ namespace axion::linalg {
         return *this;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::operator*(const Matrix& other) const
     {
         if (cols_ != other.rows_) {
@@ -231,7 +231,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::transpose() const noexcept
     {
         Matrix<T> result(cols_, rows_);
@@ -245,7 +245,7 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> Matrix<T>::hadamard(const Matrix& other) const
     {
         if (rows_ != other.rows_ ||
@@ -263,25 +263,25 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     std::size_t Matrix<T>::rows() const noexcept
     {
         return rows_;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     std::size_t Matrix<T>::cols() const noexcept
     {
         return cols_;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> operator+(T scalar, const Matrix<T>& m)
     {
         return m + scalar;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> operator-(T scalar, const Matrix<T>& m)
     {
         Matrix<T> result(m.rows_, m.cols_);
@@ -294,13 +294,13 @@ namespace axion::linalg {
         return result;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> operator*(T scalar, const Matrix<T>& m)
     {
         return m * scalar;
     }
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix)
     {
         for (std::size_t i = 0; i < matrix.rows_; ++i) {

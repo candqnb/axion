@@ -10,24 +10,24 @@
 namespace axion::linalg {
 
     template<typename T>
-    concept AllowedTypes = std::floating_point<T>;
+    concept MatrixTypes = std::floating_point<T>;
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     class Matrix;
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> operator+(T scalar, const Matrix<T>& m);
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> operator-(T scalar, const Matrix<T>& m);
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     Matrix<T> operator*(T scalar, const Matrix<T>& m);
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix);
 
-    template<AllowedTypes T>
+    template<MatrixTypes T>
     class Matrix {
     public:
         Matrix();

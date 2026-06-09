@@ -3,14 +3,13 @@ CXX := clang++
 # Default includes
 INCLUDES := -Iinclude
 
-# Source and test files
-TEST_SRC := tests/test_matrix.cpp
-TEST_OBJ := test_matrix.o
-TARGET_TEST := test_matrix
+# Test sources and objects
+TEST_SRCS := $(wildcard tests/*.cpp)
+TEST_OBJS := $(TEST_SRCS:.cpp=.o)
 
-# -------------------
+TARGET_TEST := tests/test
+
 # Development flags
-# -------------------
 DEBUG_FLAGS := -std=c++20 \
                -Wall -Wextra -Wpedantic \
                -Wshadow -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wold-style-cast \
@@ -19,17 +18,13 @@ DEBUG_FLAGS := -std=c++20 \
                -fstack-protector-all \
                -ftemplate-backtrace-limit=0
 
-# -------------------
 # Release flags
-# -------------------
 RELEASE_FLAGS := -std=c++20 -O2 -DNDEBUG -flto -Wall -Wextra -Wpedantic
 
 # Default: debug build
 CXXFLAGS := $(DEBUG_FLAGS) $(INCLUDES)
 
-# -------------------
 # Targets
-# -------------------
 all: debug
 
 # Debug build
@@ -40,12 +35,12 @@ debug: $(TARGET_TEST)
 release: CXXFLAGS := $(RELEASE_FLAGS) $(INCLUDES)
 release: clean $(TARGET_TEST)
 
-# Compile test object
-$(TEST_OBJ): $(TEST_SRC)
+# Compile each test source
+tests/%.o: tests/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Link executable
-$(TARGET_TEST): $(TEST_OBJ)
+$(TARGET_TEST): $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # Run tests
@@ -54,6 +49,6 @@ run-test: debug
 
 # Clean build artifacts
 clean:
-	rm -f *.o $(TARGET_TEST)
+	rm -f tests/*.o
 
 .PHONY: all debug release run-test clean

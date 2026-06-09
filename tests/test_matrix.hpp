@@ -8,7 +8,7 @@
 
 using namespace axion::linalg;
 
-int main() {
+int test_matrix() {
 
     Matrix A0(2, 2, {
 			1.0, 2.0,
