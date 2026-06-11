@@ -27,6 +27,17 @@ namespace axion::linalg {
     template<MatrixTypes T>
     std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix);
 
+    /*
+      Represents a dense matrix used throughout the Axion linear algebra module.
+
+      The matrix data is stored internally in a contiguous std::vector<T>,
+      using a row-major layout. Element access is performed through an
+      index mapping function that converts two-dimensional coordinates
+      into a one-dimensional storage position.
+
+      Only floating-point types are supported, as enforced by the
+      MatrixTypes concept.
+    */
     template<MatrixTypes T>
     class Matrix {
     public:

@@ -6,6 +6,6 @@ using namespace axion::linalg;
 int test_tensor() {
     Tensor<double> T0;
     Tensor<float> T1(2,1);
-    Tensor<float> T2(2, 1, {{1, 3}, {1,4}});
+    Tensor<float> T2(1, 1, {{1, 3}});
     return 0;
 }

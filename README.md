@@ -8,7 +8,7 @@ Axion is a machine learning framework designed to be fast, allowing users to dev
 
 ## Phase 1 — Linear Algebra
 
-### Matrix
+### Matrix and Tensors
 
 - [x] Matrix construction
 - [x] Matrix indexing
